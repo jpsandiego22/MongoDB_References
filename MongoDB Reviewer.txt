@@ -1,0 +1,121 @@
+MongoDB Compass - GUI for accessing the data in NoSQL Database.
+MongoDB Shell - accessing the database via commandprompt or terminal.
+    - for accessing in Shell type "mongosh" 
+
+QUERY in MongoDB
+
+-Show DB
+-Use Database Name
+-cls
+
+Create & Insert 
+-db.user_information.insertOne({fname:"Jomer",lname:"San Diego", prefix:"Jr."})
+-db.user_information.insertMany([{fname:"Jomer",lname:"San Diego", prefix:"Jr."},{fname:"Lea Margareth",lname:"San Diego", prefix:""}])
+
+Finding Documents "Search"
+1. Get all data - only display 20 records
+    -db.user_information.find()
+    - type "it" it will move to another 20 records
+
+2. Search with WHERE 
+    -db.user_information.find({fname:"Jomer"})
+    -db.user_information.find({fname:"Jomer",lname:"San Diego"})
+
+    "LIKE"
+    -db.user_information.find({fname: /Jo/})
+
+
+3. Select with selected field only
+    -db.user_information.find({fname:"Jomer"},{fname:1, prefix:1})
+    -db.user_information.find({},{fname:1, prefix:1})
+
+4. Find one record 
+    -db.user_information.findOne({_id: ObjectId("6516c62d1141b436133e0769")})
+
+5. Count
+    -db.user_information.find().count()
+
+6. Limit data
+    -db.user_information.find().limit(3)    
+
+7. Sort Data
+    -db.user_information.find().sort({fname: 1})
+    1 = asc 
+    -1 = desc
+
+8. Nested Documents
+    {
+    _id: ObjectId("6516c5f11141b436133e0768"),
+    fname: 'Jomer',
+    prefix: 'Jr.',
+    age: 33,
+    favorite: [
+                    {games:"basketball",with:"friends"},
+                    {games:"online games",with:"friends"},
+                ]
+    }
+    - db.user_information.insertMany([{fname: 'Jomer',
+                                    prefix: 'Jr.',
+                                    age: 33,
+                                    address: ["Montalban","Quezon City","Bulacan"],
+                                    favorite: [
+                                                    {games:"basketball",with:"friends"},
+                                                    {games:"online games",with:"friends"},
+                                                ]},
+                                    {fname: 'Lea Margareth',
+                                    prefix: '',
+                                    age: 16,
+                                    address: ["Rodriguez","Quezon City","Cavite"],
+                                    favorite: [
+                                                    {games:"basketball",with:"friends"},
+                                                    {games:"online games",with:"friends"},
+                                                ]}])
+
+9. Operators & Complex Queries
+    $gt = greater than || $lt = less than || add e for "equal" gte or lte
+    - db.user_information.find({age: {$gt: 20}})
+    - db.user_information.find({age: {$gt: 20}, fname: "Jomer"})
+
+    -OR Condition-
+    - db.user_information.find({$or:[{age: 33}, {age:16}]})
+    - db.user_information.find({$or:[{age: 33}, {name:"Lea Margareth"}]})
+
+    - db.user_information.find({$or:[{age: {$lte: 33}},{age:{$gte: 16}}]})
+
+10. Using $in & $nin [ $in = "WrereIN" , $nin = "Where Not in"]
+    - db.user_information.find({age: {$in:[33,16]}})
+    - db.user_information.find({age: {$nin:[33,16]}})
+
+
+11. Querying Array
+    - db.user_information.find({address: "Montalban"})
+
+    Searching in array with only this value
+        - db.user_information.find({address: ["Montalban","Quezon City", "Bulacan"]})
+
+    for seaching in array have this 2 values
+        - db.user_information.find({address: { $in: ["Quezon City","Montalban"]}})
+
+12. Querying Array with Object
+    -  db.user_information.find({"favorite.games":"basketball"})
+
+13. Deleting Data in the Collection
+    -   db.user_information.deleteOne({_id: ObjectId("6516d8a11141b436133e076f")})
+    -   db.user_information.deleteMany({age: 33)})
+
+13. Update Data in the Collection
+    -   db.user_information.updateOne({_id: ObjectId("6516d8a11141b436133e076f")},{$set: {age:14,prefix:""}})
+    -   db.user_information.updateMany({age: 14},{$set: {age:33,prefix:"Jr."}})
+
+    increment & decrement [ $inc = increment & the value (1 or -1)]
+    -   db.user_information.updateOne({_id: ObjectId("6516d8a11141b436133e076f")},{$inc: {age:-1}})
+
+    PUSH AND PULL ( array removal )
+    PULL = out of the array
+    PUSH = add in the array
+
+    -   db.user_information.updateOne({_id: ObjectId("6516d8a11141b436133e076f")},{$pull: {address:"Bulacan"}})
+    -   db.user_information.updateOne({_id: ObjectId("6516d8a11141b436133e076f")},{$push: {address:"Bulacan"}})
+
+    EACH (for multiple push and pull)
+    -   db.user_information.updateOne({_id: ObjectId("6516d8a11141b436133e076f")},{$push: {address:{$each:["Lipa","San Pablo"]}}})
