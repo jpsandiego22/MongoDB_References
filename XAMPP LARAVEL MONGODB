@@ -1,0 +1,40 @@
+CONNECT WINDOWS XAMPP PHP TO MONGO DB
+< using PHP 7.4 >
+1. Go to this link 
+-  https://pecl.php.net/package/mongodb/1.13.0/windows
+  Download : PHP 7.4 |	7.4 Thread Safe (TS) x64
+
+Paste the mongodb.dll in C:\xampp\php\ext
+Edit PHP.ini - MODULE SETTINGS
+;;;;;;;;;;;;;;;;;;;
+; Module Settings ;
+;;;;;;;;;;;;;;;;;;;
+asp_tags=Off
+display_startup_errors=On
+track_errors=Off
+y2k_compliance=On
+allow_call_time_pass_reference=Off
+safe_mode=Off
+safe_mode_gid=Off
+safe_mode_allowed_env_vars=PHP_
+safe_mode_protected_env_vars=LD_LIBRARY_PATH
+error_log="C:\xampp\php\logs\php_error_log"
+register_globals=Off
+register_long_arrays=Off
+magic_quotes_gpc=Off
+magic_quotes_runtime=Off
+magic_quotes_sybase=Off
+extension=php_openssl.dll
+extension=php_ftp.dll
+extension=php_mongodb.dll
+
+Restart XAMPP
+
+--------------------------------------------------------------------------------------------------
+CREATE LARAVEL PROJECT
+- composer create-project laravel/laravel laravel-mongodb
+- composer require mongodb/mongodb
+
+
+
+
